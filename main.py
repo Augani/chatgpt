@@ -3,9 +3,12 @@ import PyPDF2
 import pandas as pd
 import json
 import os
+import dotenv
+
+dotenv.load_dotenv()
 
 # Set your OpenAI API key
-openai.api_key = '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'
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 # Function to extract text from a PDF file
 def extract_text_from_pdf(pdf_path):
