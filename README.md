@@ -78,12 +78,11 @@ $ git clone https://github.com/{{YOUR_GITHUB_USERNAME}}/chatgpt
 $ cd chatgpt
 
 # Install dependencies
-$ yarn
+$ pip install -r requirements.txt
 
 # Run the project
-$ yarn start
+$ python main.py
 
-# The server will initialize in the <http://localhost:3000>
 ```
 
 ## :memo: License ##

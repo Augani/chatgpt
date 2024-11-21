@@ -85,23 +85,38 @@ def generate_article(compiled_text, style_instructions, sample_outline=None):
 
     prompt += f"\nData:\n{compiled_text}\n\nPlease provide a detailed analysis."
 
-    # Due to token limits, we may need to truncate the prompt or data
-    max_prompt_tokens = 3500
+    prompt += f"\n\nPlease focus on the Nigerian Stock Exchange (NSE) market."
+
+
+    # Increased max tokens for the prompt
+    max_prompt_tokens = 7000  # Increased from 3500
+
     prompt = prompt[-max_prompt_tokens:]
 
-    # New API syntax
-    response = openai.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "You are an expert analyst and writer."},
-            {"role": "user", "content": prompt}
-        ],
-        max_tokens=1500,
-        temperature=0.7
-    )
-
-    article = response.choices[0].message.content
-    return article
+    # Split the content into multiple chunks if needed
+    chunks = [compiled_text[i:i + max_prompt_tokens] 
+             for i in range(0, len(compiled_text), max_prompt_tokens)]
+    
+    full_article = ""
+    
+    for i, chunk in enumerate(chunks):
+        current_prompt = prompt.replace(compiled_text, chunk)
+        if i > 0:
+            current_prompt = f"Continue the analysis with the following additional data:\n{chunk}"
+        
+        response = openai.chat.completions.create(
+            model="gpt-3.5-turbo-16k",  # Using 16k model for longer context
+            messages=[
+                {"role": "system", "content": "You are an expert analyst and writer. Create detailed, comprehensive analysis incorporating as much relevant information as possible from the source materials."},
+                {"role": "user", "content": current_prompt}
+            ],
+            max_tokens=4000,  # Increased from 1500
+            temperature=0.7
+        )
+        
+        full_article += response.choices[0].message.content + "\n\n"
+    
+    return full_article
 
 # Main function
 def main():
