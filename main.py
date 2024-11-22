@@ -57,7 +57,7 @@ def extract_data_from_csv(csv_path):
 
 
 # Collect data from multiple sources
-def collect_data(news_json_files, pdf_paths, excel_paths):
+def collect_data(news_json_files, pdf_paths, excel_paths, csv_paths):
     compiled_text = ''
 
     # Extract text from news articles JSON files
@@ -77,6 +77,12 @@ def collect_data(news_json_files, pdf_paths, excel_paths):
         print(f'Extracting data from Excel file {excel}')
         excel_text = extract_data_from_excel(excel)
         compiled_text += f'\n\nData from Excel {excel}:\n{excel_text}'
+
+    # Extract data from CSV files
+    for csv in csv_paths:
+        print(f'Extracting data from CSV file {csv}')
+        csv_text = extract_data_from_csv(csv)
+        compiled_text += f'\n\nData from CSV {csv}:\n{csv_text}'
 
     return compiled_text
 
@@ -134,9 +140,10 @@ def main():
     news_articles_dir = './input/articles'
     pdf_dir = './input/research_files'
     excel_dir = './input/market_data'
+    csv_dir = './input/HistoricalData.csv'
 
     # Verify that directories exist
-    for directory in [news_articles_dir, pdf_dir, excel_dir]:
+    for directory in [news_articles_dir, pdf_dir, excel_dir, csv_dir]:
         if not os.path.exists(directory):
             print(f"Directory {directory} does not exist.")
             return
@@ -162,8 +169,15 @@ def main():
         if f.endswith('.xls') or f.endswith('.xlsx')
     ]
 
+    # Get list of all CSV files in the csv directory
+    csv_paths = [
+        os.path.join(csv_dir, f)
+        for f in os.listdir(csv_dir)
+        if f.endswith('.csv')
+    ]
+
     # Check if there are files to process
-    if not news_json_files and not pdf_paths and not excel_paths:
+    if not news_json_files and not pdf_paths and not excel_paths and not csv_paths:
         print("No files found to process.")
         return
 
