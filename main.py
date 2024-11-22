@@ -46,6 +46,16 @@ def extract_articles_from_json(json_path):
         print(f"Error reading JSON file {json_path}: {e}")
     return compiled_text
 
+# Function to extract data from a CSV file
+def extract_data_from_csv(csv_path):
+    try:
+        df = pd.read_csv(csv_path)
+        return df.to_string()
+    except Exception as e:
+        print(f"Error reading CSV file {csv_path}: {e}")
+        return ''
+
+
 # Collect data from multiple sources
 def collect_data(news_json_files, pdf_paths, excel_paths):
     compiled_text = ''
@@ -171,20 +181,41 @@ def main():
         "Use headings and subheadings to structure the content.\n"
         "Include an introduction, several data analysis sections, and a conclusion.\n"
         "Use bullet points and numbered lists where appropriate.\n"
-        "Incorporate industry-specific terminology as seen in the sample article."
+        "Incorporate industry-specific terminology as seen in the sample article.\n"
+        "The article should be in the style of a Chief Economist.\n"
+        "The article should only be written based on the sections provided in the sample outline.\n"
+        "Make sure the article isn't too long, recommended length is about 4-6 pages."
     )
 
     # Optionally, create a sample outline (shortened due to token limits)
     sample_outline = (
-        "1. Introduction\n"
-        "   - Brief overview of the main topics.\n"
-        "2. Data Analysis\n"
-        "   - Analysis of news articles.\n"
-        "   - Insights from PDFs.\n"
-        "   - Key findings from Excel data.\n"
-        "3. Conclusion\n"
-        "   - Summarize the key points.\n"
-        "   - Implications and recommendations."
+        # "1. Introduction\n"
+        # "   - Brief overview of the main topics.\n"
+        # "2. Data Analysis\n"
+        # "   - Analysis of news articles.\n"
+        # "   - Insights from PDFs.\n"
+        # "   - Key findings from Excel data.\n"
+        # "3. Conclusion\n"
+        # "   - Summarize the key points.\n"
+        # "   - Implications and recommendations."
+
+        "SecondSTAX Africa View\n"
+        "From the Chief Economist | Monday, October 21, 2024\n"
+        "1. Weekly Recap\n"
+        "- Paragraph summarizing the Ghanaian market performance\n"
+        "- Paragraph summarizing the Kenyan market performance\n"
+        "- Paragraph summarizing the Nigerian market performance\n"
+        "2. Indices\n"
+        "3. Treasuries\n"
+        "4. Forex\n"
+        "5. Commodities\n"
+        "6. Economic Indicators\n"
+        "7. Market Movers\n"
+        "8. Recommendations Table\n"
+        "9. News Moving the Markets\n"
+        "10. SSX Markets Last Week\n"
+        "11. Disclosure & Disclaimer Policy\n"
+
     )
 
     # Collect and compile data
